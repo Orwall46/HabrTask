@@ -23,7 +23,7 @@ pip install -r requirements.txt
 ``` 
 Run Django
 ```
-cd Mail
+cd testSite
 ```
 ```
 python manage.py runserver
