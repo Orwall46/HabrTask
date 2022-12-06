@@ -1,0 +1,13 @@
+{% extends 'navbar.html' %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<h1>Hello {{user.email}}</h1>
+{% else %}
+<h1>Hello world!</h1>
+{% endif %}
+{% endblock %}

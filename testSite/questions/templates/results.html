@@ -1,0 +1,15 @@
+{% extends 'navbar.html' %}
+{% load static %}
+{% block title %}
+Results
+{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    Результаты:
+    <p>Score - {{score_}}</p>
+    <p>Results - {{results}}</p>
+    <p>Passed - {{passed}}</p>
+{% endif %}
+{% endblock %}

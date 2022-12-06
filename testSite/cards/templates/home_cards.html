@@ -1,0 +1,141 @@
+{% extends 'navbar.html' %}
+
+{% block title %}
+All Cards
+{% endblock %}
+
+{% block content %}
+<div class="container d-flex form-card car-add-form card mt-sm-5 p-2 p-sm-3 p-md-5 mt-0" style="max-width: 550px">
+    <h1>Генерация карт</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-sm">Count</span>
+            </div>
+            <input type="number" class="form-control" aria-label="Count" name="count" aria-describedby="inputGroup-sizing-sm" required>
+        </div>
+        <select class="form-select" aria-label="Default select example" name="data" required>
+            <option selected>Выберите срок</option>
+            <option value="1">1 месяц</option>
+            <option value="6">6 месяев </option>
+            <option value="12">12 месяцев</option>
+        </select></br>
+        <div class="input-group input-group-sm mb-3">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="inputGroup-sizing-sm">Seria</span>
+            </div>
+            <input type="text" class="form-control" aria-label="Seria" name="seria" aria-describedby="inputGroup-sizing-sm" maxlength="2" required>
+        </div>
+        <button type="submit" class="btn next-btn btn-primary">Генерация</button>
+    </form>
+</div>
+</br>
+
+<div id="filter-div" class="mt-0 mt-md-4">
+    <div class="container filter-card d-flex card mt-0 mt-md-3" id="filtration-div" style="max-width: 1050px">
+        <div class="card-body">
+            <div class="pe-md-5 d-flex justify-content-center ps-md-5">
+                <form method="GET" id="filter-form">
+
+                    <div class="container d-flex flex-md-row justify-content-center flex-column">
+                        <div class="price-inp-div d-flex justify-content-center me-0">
+
+                            <!-- series -->
+                            <input type="hidden" name="series" value="{% if request.GET.series %}{{ request.GET.series}}{% endif %}" id="series" name="series" class="count-control">
+                            <div class="filter-inp-div input-group mb-3" style="width: 150px">
+                                <input type="text" value="{% if request.GET.series %}{{ request.GET.series}}{% endif %}" id="series" name="series" placeholder="Серия" class="count-control form-control first-filter-div">
+                            </div>
+        
+                            <!-- number -->
+                            <input type="hidden" name="number" value="{% if request.GET.number %}{{ request.GET.number}}{% endif %}" id="number" name="number" class="count-control">
+                            <div class="filter-inp-div input-group mb-3" style="width: 150px">
+                                <input type="text" value="{% if request.GET.number %}{{ request.GET.number}}{% endif %}" id="number" name="number" placeholder="Номер" class="count-control form-control second-filter-div">
+                            </div>
+                        </div>
+        
+                        <div class="ms-md-3 d-flex justify-content-center">Дата выпуска с - по
+                            <!-- data_start -->
+                            <input type="hidden" name="data_start__gt" value="{% if request.GET.data_start__gt %}{{ request.GET.data_start__gt}}{% endif %}" id="data_start__gt" name="data_start__gt" class="count-control">
+                            <div class="filter-inp-div first-second input-group mb-3" style="width: 150px">
+                                <input type="date" value="{% if request.GET.data_start__gt %}{{ request.GET.data_start__gt}}{% endif %}" placeholder="Дата выпуска" id="data_start__gt" name="data_start__gt" class="count-control form-control first-filter-div">
+                            </div>
+        
+                            <!-- data_start_to -->
+                            <input type="hidden" name="data_start__lt" value="{% if request.GET.data_start__lt %}{{ request.GET.data_start__lt}}{% endif %}" id="data_start__lt" name="data_start__lt" class="count-control">
+                            <div class="filter-inp-div first-second input-group mb-3" style="width: 150px">
+                                <input type="date" value="{% if request.GET.data_start__lt %}{{ request.GET.data_start__lt}}{% endif %}" placeholder="Дата окончания" name="data_start__lt" id="data_start__lt" class="count-control form-control second-filter-div">
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row justify-content-center">
+                            <div class="filter-inp-div one-filter form-group mb-2 me-lg-3">
+                                <select class="count-control form-control serialize" name="status" id="status">
+                                    <option value="" disabled selected>Статус</option>
+                                    {% if request.GET.color %}
+                                        <option value="{{request.GET.status}}" selected>
+                                        {% if request.GET.status == "активирована" %}Активный
+                                        {% elif request.GET.status == "не активирована" %}Не активный
+                                        {% elif request.GET.status == "просрочена" %}Просрочена
+                                        {% endif %}
+                                        </option>
+                                    {% endif %}
+                                    <option value="активирована">Активный</option>
+                                    <option value="не активирована">Не активный</option>
+                                    <option value="просрочена">Просрочена</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ms-md-3 d-flex justify-content-center">Дата окончания с - по
+                        <!-- data_end -->
+                        <input type="hidden" name="data_end__gt" value="{% if request.GET.data_end__gt %}{{ request.GET.data_end__gt}}{% endif %}" id="data_end__gt" name="data_end__gt" class="count-control">
+                        <div class="filter-inp-div first-second input-group mb-3" style="width: 150px">
+                            <input type="date" value="{% if request.GET.data_end__gt %}{{ request.GET.data_end__gt}}{% endif %}" placeholder="Дата выпуска" id="data_end__gt" name="data_end__gt" class="count-control form-control first-filter-div">
+                        </div>
+    
+                        <!-- data_end_to -->
+                        <input type="hidden" name="data_start__lt" value="{% if request.GET.data_end__lt %}{{ request.GET.data_end__lt}}{% endif %}" id="data_end__lt" name="data_end__lt" class="count-control">
+                        <div class="filter-inp-div first-second input-group mb-3" style="width: 150px">
+                            <input type="date" value="{% if request.GET.data_endt__lt %}{{ request.GET.data_end__lt}}{% endif %}" placeholder="Дата окончания" name="data_end__lt" id="data_end__lt" class="count-control form-control second-filter-div">
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-sm-row justify-content-between">
+                        <div class="d-flex justify-content-center">
+                            <button type="submit" id="show-qs-btn" class="btn subm btn-success me-2" style="height: 36px">Показать</button>
+                        </div>
+                    </div>
+
+                </form>  
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if filter.qs %}
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">Серия</th>
+            <th scope="col">Номер</th>
+            <th scope="col">Дата выпуска</th>
+            <th scope="col">Дата окончания</th>
+            <th scope="col">Статус</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for card in filter.qs %}
+                <tr>
+                    <th scope="row">{{card.series}}</th>
+                    <td><a href="/cards/{{card.pk}}">{{card.number}}</a></td>
+                    <td>{{card.data_start}}</td>
+                    <td>{{card.data_end}}</td>
+                    <td>{{card.status}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'navbar.html' %}
+
+{% block title %}
+Tests
+{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+<div class="container">
+    <h1 class="display-6 fw-normal">Выберите интересующий для вас тест из списка ниже:</h1> </br>
+    {% for quiz in quizes %}
+    <!-- Modal -->
+        <div class="modal fade" id="exampleModal{{forloop.counter0}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">{{quiz}}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Сложность - {{quiz.difficult}}</p>
+                    <p>Кол-во вопросов - {{quiz.number_of_questions}}</p>
+                    <p>Время - {{quiz.time_end}} минут</p>
+                    <p>Проходной балл - {{quiz.score_to_pass}}</p>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+                <a class="btn btn-primary" href="quiz/{{quiz.pk}}" role="button">Вперед</a>
+                </div>
+            </div>
+            </div>
+        </div>
+    <p data-bs-toggle="modal" data-bs-target="#exampleModal{{forloop.counter0}}" class="text-decoration-underline">- {{quiz}}</p>
+    {% endfor %}
+</div>
+
+{% else %}
+
+<div class="container form-card d-flex card mt-sm-5 p-2 p-sm-3 p-md-5 mt-0" style="max-width: 500px">
+    <div class="card-body">
+        <h5 class="text-center">Авторизуйтесь на сайте, чтобы просмотреть список тестов - <a href="{% url 'login' %}">Войти</a></h5>
+    </div>
+</div>
+
+{% endif %}
+
+{% endblock %}

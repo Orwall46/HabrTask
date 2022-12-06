@@ -1,0 +1,29 @@
+{% extends 'navbar.html' %}
+
+{% block title %}
+Card Info
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <p>Серия карты - {{card_info.series}}</p>
+    <p>Номер карты - {{card_info.number}}</p>
+    <p>Выпуск карты - {{card_info.data_start}}</p>
+    <p>Дата окончания действия - {{card_info.data_end}}</p>
+    <p>Последний раз использовали - {{card_info.last_used}}</p>
+    <p>Сумма на карте - {{card_info.summ}} Р.</p>
+    <p>Сатутс - {{card_info.status}}</p>
+    
+    <form method="POST">
+        {% csrf_token %}
+        {% if card_info.status == 'не активирована' or card_info.status == 'просрочена' %}
+        <button type="submit" name="activation" class="btn btn-primary">Активировать</button>
+        {% else %}
+        <button type="submit" name="deactivation" class="btn btn-secondary">Деактивировать</button>
+        {% endif %}
+        <button type="submit" name="delete" class="btn btn-danger">Удалить карту</button>
+    </form>
+</div>
+
+{% endblock %}
